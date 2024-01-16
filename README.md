@@ -1,9 +1,8 @@
 # Customer Management Application
 This is a CRUD (Create, Read, Update, Delete) application for managing customer information. The application uses a MySQL database for data storage, Spring Boot for the backend, and HTML/CSS/JS for the frontend. JWT authentication is implemented to secure the backend APIs.
-Backend
-# Clone the repository:
-git clone https://github.com/yourusername/customer-management.git
 
+Backend
+Clone the repository:
 # Navigate to the backend directory:
 cd customer-management/backend
 
