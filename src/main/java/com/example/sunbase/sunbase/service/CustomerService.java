@@ -63,7 +63,7 @@ public class CustomerService implements CustomerServiceInterface {
     }
 
     @Override
-    public void deletePost(long id) {
+    public void deleteCustomer(long id) {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer", "id", id));
         customerRepository.delete(customer);
     }

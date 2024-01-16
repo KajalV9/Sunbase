@@ -10,7 +10,7 @@ public interface CustomerServiceInterface {
 
     CustomerDto getCustomerById(long id);
 
-    void deletePost(long id);
+    void deleteCustomer(long id);
 
     CustomerResponse getAllCustomers(int pageNo, int pageSize, String sortBy, String sortDir);
 
