@@ -134,4 +134,4 @@ Ability to search and sync with the remote API.
 
 3. Add a New Customer
 Simple form for adding a new customer.
-Accessed when clicked on add new button on Customer List Screen
+Accessed when clicked on add Customer button on Customer List Screen
