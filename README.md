@@ -81,8 +81,8 @@ Response Body :
             "address": "Apt 101",
             "city": "Pune",
             "state": "Maharashtra",
-            "email": "kajalv1028@gmail.com",
-            "phoneno": "917666897591"
+            "email": "ki@gmail.com",
+            "phoneno": "9176667777"
         },
         {
             "id": 17,
@@ -92,8 +92,8 @@ Response Body :
             "address": "Apt 101",
             "city": "Greenville",
             "state": "SC",
-            "email": "divyavarma0212@gmail.com",
-            "phoneno": "7890123456"
+            "email": "john@gmail.com",
+            "phoneno": "1111111111"
         },
         {
             "id": 18,
