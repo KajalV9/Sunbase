@@ -15,4 +15,10 @@ public interface CustomerServiceInterface {
     CustomerResponse getAllCustomers(int pageNo, int pageSize, String sortBy, String sortDir);
 
     CustomerDto searchbyPhoneNo(String phoneno);
+
+    CustomerDto searchbyEmailId(String email);
+
+    CustomerDto searchbyCity(String city);
+
+    CustomerDto searchbyFirstName(String firstName);
 }
