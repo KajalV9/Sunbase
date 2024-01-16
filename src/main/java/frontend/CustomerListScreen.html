@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer List</title>
+    <script src="js/searchCustomers.js" type="application/javascript"></script>
+    <script src="js/populateCustomerTable.js" type="application/javascript"></script>
+    <script src="js/deleteCustomer.js" type="application/javascript"></script>
+    <script src="js/getAllCustomers.js" type="application/javascript"></script>
+    <script src="js/submitAddCustomerForm.js" type="application/javascript"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+        }
+
+        .add-customer-btn {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Styles for the modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px; /* Set a specific width for the modal content */
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+
+        .form-group button:last-child {
+            background-color: #e74c3c;
+            margin-left: 10px;
+        }
+
+        .form-group button:last-child:hover {
+            background-color: #c0392b;
+        }
+
+    </style>
+</head>
+<body>
+<div class="header">
+    <button class="add-customer-btn" onclick="openAddCustomerModal()">Add Customer</button>
+    <div>
+        <select id="searchByDropdown">
+            <option value="searchByfirstname">Search by First Name</option>
+            <option value="searchBycity">Search by City</option>
+            <option value="searchByemail">Search by Email</option>
+            <option value="searchByPhone">Search by Phone No</option>
+        </select>
+        <input type="text" id="searchBar" class="search-bar" placeholder="Enter search term...">
+        <button onclick="searchCustomers()">Search</button>
+        <button id="syncButton">Sync</button>
+
+    </div>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Address</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Email</th>
+        <th>Phone No</th>
+        <th>Action</th>
+    </tr>
+
+    <tbody id="customerTableBody"></tbody>
+    </thead>
+</table>
+
+<!-- Modal for adding a new customer -->
+<div id="addCustomerModal" class="modal">
+    <div class="modal-content">
+        <h2>Add/Edit Customer</h2>
+        <form id="addCustomerForm">
+            <div class="form-group" style="display: none;">
+                <label for="customerId">Customer ID:</label>
+                <input type="text" id="customerId" name="customerId">
+            </div>
+
+            <div class="form-group">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+
+            <div class="form-group">
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" required>
+            </div>
+
+            <div class="form-group">
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="street">Street:</label>
+                <input type="text" id="street" name="street" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone No:</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+
+            <div class="form-group">
+                <button type="button" onclick="submitAddCustomerForm()">Submit</button>
+                <button type="button" onclick="closeAddCustomerModal()">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+             let editingCustomerId = null;
+
+<!--            function openAddCustomerModal() {-->
+<!--                document.getElementById('addCustomerModal').style.display = 'flex';-->
+<!--                document.getElementById('addCustomerModal').querySelector('h2').textContent = 'Add Customer';-->
+<!--            }-->
+
+<!--            function closeAddCustomerModal() {-->
+<!--                document.getElementById('addCustomerModal').style.display = 'none';-->
+<!--                document.getElementById('addCustomerForm').reset();-->
+<!--            }-->
+
+     function openAddCustomerModal() {
+        // Reset the form and hide the modal
+        document.getElementById('addCustomerForm').reset();
+        document.getElementById('addCustomerModal').style.display = 'flex';
+        document.getElementById('addCustomerModal').querySelector('h2').textContent = 'Add Customer';
+        // Clear the editingCustomerId
+        editingCustomerId = null;
+    }
+
+    function closeAddCustomerModal() {
+        // Reset the form and hide the modal
+        document.getElementById('addCustomerForm').reset();
+        document.getElementById('addCustomerModal').style.display = 'none';
+        // Clear the editingCustomerId
+        editingCustomerId = null;
+    }
+
+    function editCustomer(customerId) {
+        // Find the customer with the given ID in your customer list (you need to implement this)
+        const customerToEdit = findCustomerById(customerId);
+
+        if (customerToEdit) {
+            // Set the form values with the customer data
+            document.getElementById('firstName').value = customerToEdit.firstName;
+            document.getElementById('lastName').value = customerToEdit.lastName;
+            document.getElementById('address').value = customerToEdit.address;
+            document.getElementById('city').value = customerToEdit.city;
+            document.getElementById('state').value = customerToEdit.state;
+            document.getElementById('email').value = customerToEdit.email;
+            document.getElementById('street').value = customerToEdit.street;
+            document.getElementById('phone').value = customerToEdit.phoneno;
+
+            // Set the editingCustomerId
+            editingCustomerId = customerId;
+
+            // Change the modal title to indicate editing
+            document.getElementById('addCustomerModal').querySelector('h2').textContent = 'Edit Customer';
+
+            // Show the modal
+            document.getElementById('addCustomerModal').style.display = 'flex';
+        } else {
+            console.error('Customer not found for editing');
+        }
+    }
+
+</script>
+</body>
+</html>
